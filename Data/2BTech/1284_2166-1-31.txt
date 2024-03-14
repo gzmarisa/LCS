@@ -1,3 +1,0 @@
-File Start timestamp: 
-2166-1-31,21:85:85
-DeviceId,Date,Time
