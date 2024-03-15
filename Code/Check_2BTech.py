@@ -1,73 +1,115 @@
 
-# Upload relevent libraries
+# Import relevent libraries
 import csv
 import glob
 import os
+import matplotlib.pyplot as plt
+
+## Define functions
+def empty(parameter):
+    return len(parameter) == 0
+
+def  not_available(parameter):
+    return parameter == 'N/A'
+
+def negative(parameter):
+    return float(pm) < 0
 
 # Data paths 
 path_2BTech = '../Data/2BTech/'
 
-# Upload 2B Tech Files into one csv 
+list_N02_raw = []
+list_PM1_raw = []
+list_PM25_raw = []
+list_date = []
+list_time = []
+list_timestamp = []
 
+## Test how to go through one 2BTech File 
+with open('../Data/2BTech/1284_2023-12-1.txt', newline='') as txt_file:
+    reader = csv.reader(txt_file, delimiter=',')
+    
+    started = False
+    counter = 0
+    sumN02 = 0
+    sumPM1 = 0
+    valid = 0
+    for row in reader:
+        if counter > 2 and counter < 10:
+            N02 = row[1]
+            CO = row[2]
+            PM1 = row[3]
+            PM25 = row[4]
+            CO2 = row[6]
+            Ozone = row[10]
+            date = row[16]
+            time = row[17]
+            timestamp = date + " " + time
+#            hour = time.split(':')[0]
+            minute = time.split(':')[1]
+#            second = time.split(':')[2]
+#            print(time, hour, minute, second)
+            list_N02_raw.append(float(N02))
+            list_PM1_raw.append(PM1)
+            list_PM25_raw.append(float(PM25))
+            list_date.append(date)
+            list_timestamp.append(timestamp)
+
+#            print(row)
+
+               # #print(date, pms)
+            if not_available(NO2): # add function for weird values
+                N02 = None
+                print(row)
+            if int(hour) == 23 int(minute) == 59 and N02 != None:
+                sumN02 += float(N02)
+                avgN02 = sumN02/valid
+                valid = 0
+                print(date, avgN02)
+                   
+                sumN02 = 0 #resart after the 24 hours
+                elif int(minute) == 59 and valid == 0:
+                    print(date, 0)
+                    sumN02 = 0
+                elif int(minute) == 59 and N02 == None:
+                    avgN02 = sumN02/valid
+                    valid = 0
+                    print(date, avgN02)
+                    sumN02 = 0
+             
+                elif int(minute) < 59 and N02 != None:
+                    sumN02 += float(N02)
+                    valid += 1
+
+        counter += 1
+
+plt.scatter(list_timestamp, list_N02_raw)
+#plt.scatter(list_timestamp, list_PM25_raw)
+
+## Go throught all files in the directory 
 ## Use a wildcard pattern to match all CSV files in the directory
-files_2BTech = glob.glob(path_2BTech + '*.txt')
-files_2BTech.sort(key=os.path.getmtime)
-#files_2BTech =os.path.getmtime
+# files_2BTech = glob.glob(path_2BTech + '*.txt')
+# files_2BTech.sort(key=os.path.getmtime)
+# #files_2BTech =os.path.getmtime
 
 
-combined_data_2BTech = []
-for filename in files_2BTech:
-    filepath = filename
-    #print(filepath)
-    with open(filepath, newline='') as txt_file:
-        csv_reader = csv.reader(txt_file, delimiter=',')
-    
-            #started_2BTech = False
-        counter_2BTech = 0
-            #SumPms_2BTech = 0
-            #valid_2BTech = 0
-        for row in csv_reader:
-            if counter_2BTech > 2:
-                combined_data_2BTech.append(row)
-                
-            counter_2BTech += 1
-
-## Intialize an empty list to store rows from each file
 # combined_data_2BTech = []
-
-# ## Read and append rows from each CSV file to the combined_data list
-# for file_2BTech in files_2BTech:
-#     with open(file_2BTech, 'r') as txt_file:
-#         reader = csv.reader(txt_file)
-        
-#         if not combined_data_2BTech:  # Include header only once
-#             combined_data_2BTech.append(next(reader))
-#             #print(file_2BTech, os.path.getmtime(file_2BTech))
-#         else:
-#             next(reader)  # Skip header
-#             combined_data_2BTech.extend(row for row in reader)
-#             #print(file_2BTech, os.path.getmtime(file_2BTech))
-            
-# ## Write the combined data to a new CSV file
-# with open('combined_updated.csv', 'w', newline='') as outfile:
-#     writer = csv.writer(outfile)
-#     writer.writerows(combined_data_2BTech)
-
-## Upload 2B Tech Files 
-# with open('../Code/combined.csv', newline='') as csv_file_2BTech:
-#     csv_reader_2BTech = csv.reader(csv_file_2BTech, delimiter=',')
+# for filename in files_2BTech:
+#     filepath = filename
+#     #print(filepath)
+#     with open(filepath, newline='') as txt_file:
+#         csv_reader = csv.reader(txt_file, delimiter=',')
     
-#     csv_reader_2BTech = csv.reader(csv_file_2BTech, delimiter=',')
-    
-#     started_2BTech = False
-#     counter_2BTech = 0
-#     SumPms_2BTech = 0
-#     valid_2BTech = 0
-#     for row in csv_reader_2BTech:
-#         if counter_2BTech > 2 and counter_2BTech <10:
-#             print(row)
-        
-#         counter_2BTech += 1
+#             #started_2BTech = False
+#         counter_2BTech = 0
+#             #SumPms_2BTech = 0
+#             #valid_2BTech = 0
+#         for row in csv_reader:
+#             if counter_2BTech > 2:
+#                 combined_data_2BTech.append(row)
+                
+#             counter_2BTech += 1
 
 
+### Notes 
 
