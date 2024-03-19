@@ -26,7 +26,8 @@ list_time = []
 list_timestamp = []
 
 
-
+sumOzone = 0
+valid = 0
 
 ## Test how to go through one 2BTech File 
 with open('../Data/2BTech/1284_2023-12-1.txt', newline='') as txt_file:
@@ -39,36 +40,40 @@ with open('../Data/2BTech/1284_2023-12-1.txt', newline='') as txt_file:
                 #print(row)
                 current_value = float(row[16].split("-")[2])
                 previous_value = float(previous_row[16].split("-")[2])
-                difference = current_value - previous_value
-                print(i, difference, row) 
-               if not_available(N02): 
-                   N02 = None
-                   
-                if difference < 1:
-                    
-                                   #print(row)
-                    if N02 != None:
-                        sumN02 += float(N02)
-                        avgN02 = sumN02/valid
-                        valid = 0
-                        print(date, avgN02, sumN02)
-                        sumN02 = 0 #resart after the 24 hours
-                    elif valid == 0:
-                        print(date, 0)
-                        sumN02 = 0
-                    elif N02 == None:
-                        avgN02 = sumN02/valid
-                        valid = 0
-                        print(date, avgN02, sumN02)
-                        sumN02 = 0
-                    elif int(hour) < 23 and int(minute) < 59 and  N02 != None:
-                            sumN02 += float(N02)        
-                            valid += 1
-                            #print(date, avgN02)
-                        
+                diff = current_value - previous_value
+#                print(i, difference, row) 
+                N02 = row[1]
+                CO = row[2]
+                PM1 = row[3]
+                PM25 = row[4]
+                CO2 = row[6]
+                Ozone = row[10]
+                date = row[16]
+                time = row[17]
+                timestamp = date + " " + time
+                hour = time.split(':')[0]
+                minute = time.split(':')[1]
+                second = time.split(':')[2]
+             
+                if not_available(Ozone): 
+                   Ozone = None
+                
+                if diff == 1:
+                   avgOzone = sumOzone/valid
+                   print(avgOzone)
+                   sumOzone = 0 #resart after the 24 hours
+                   sumOzone += float(Ozone)  
+                elif diff == 0 and Ozone == None:
+                   pass
+                elif diff == 0 and Ozone != None:
+                      sumOzone += float(Ozone)        
+                      valid += 1
+                   #   print(date, avgN02)
+                   #   print(date, avgN02)
+                
             previous_row = row                        
-        # # counter += 1
-    #i += 1
+
+              
 
 #plt.scatter(list_timestamp, list_N02_raw)
 #plt.scatter(list_timestamp, list_PM25_raw)
@@ -96,6 +101,14 @@ with open('../Data/2BTech/1284_2023-12-1.txt', newline='') as txt_file:
 #                 combined_data_2BTech.append(row)
                 
 #             counter_2BTech += 1
+
+
+
+
+
+
+
+
 
 
 ### Notes 
@@ -171,3 +184,57 @@ with open('../Data/2BTech/1284_2023-12-1.txt', newline='') as txt_file:
 #                 #print(date, avgN02)
 
 #         counter += 1
+
+
+
+                # if not_available(N02): 
+                #    N02 = None
+
+                # if difference == 1 and N02 != None:
+                #    sumN02 += float(N02)
+                #    avgN02 = sumN02/valid
+                #    valid = 0
+                #    print(date, avgN02, sumN02)
+                #    sumN02 = 0 #resart after the 24 hours
+                # elif difference == 1 and valid == 0:
+                #     print(date, 0)
+                #     sumN02 = 0
+                # elif difference == 1 and  N02 == None:
+                #     avgN02 = sumN02/valid
+                #     valid = 0
+                #     print(date, avgN02, sumN02)
+                #     sumN02 = 0
+                             
+                # elif differemce == 0 and  N02 != None:
+                #     sumN02 += float(N02)        
+                #     valid += 1
+                #     #print(date, avgN02)
+                #     print(date, avgN02)
+                
+
+  #           if diff == 0 and Ozone != None:
+  #               sumOzone += float(Ozone)        
+  #               valid += 1
+  #            #   print(date, avgN02)
+  #            #   print(date, avgN02)
+  #               print(i, SumOzone, valid)  
+  #           elif diff == 0 and Ozone == None:
+  #               pass
+  # #             avgOzone = sumOzone/valid
+  # #              valid = 0
+  #              # print(date, avgN02, sumN02)
+  # #              sumOzone = 0
+  #           elif diff == 1:
+  #               avgOzone = sumOzone/valid
+  #               print(avgOzone)
+  #          #     sumOzone = 0 #resart after the 24 hours
+                
+  #           # elif diff == 1 and  N02 == None:
+  #           #     avgN02 = sumN02/valid
+  #           #     valid = 0
+  #           #     print(date, avgN02, sumN02)
+  #           #     sumN02 = 0
+  #           # elif diff == 1 and valid == 0:
+  #           #       print(date, 0)
+  #           #       sumN02 = 0
+                        
