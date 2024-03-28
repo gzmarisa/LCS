@@ -20,8 +20,8 @@ path_2BTech = '../Data/2BTech/'
 
 # Go throught all files in the directory 
 # Use a wildcard pattern to match all CSV files in the directory
-files_2BTech = glob.glob(path_2BTech + '*.txt')
-files_2BTech.sort(key=os.path.getmtime)
+# files_2BTech = glob.glob(path_2BTech + '*.txt')
+# files_2BTech.sort(key=os.path.getmtime)
 
 # combined_data_2BTech = []
 # for filename in files_2BTech:
@@ -116,6 +116,11 @@ with open('data.csv', newline='') as csv_file:
                 
                 if not_available(N02): 
                     N02 = None
+                
+                if N02 == None:
+                    list_N02_raw.append((N02))
+                if N02 != None:
+                    list_N02_raw.append(float(N02))
                     
                 if diff > 0 or diff < 0:
                     avgN02 = sumN02/valid_N02
@@ -224,8 +229,11 @@ with open('data.csv', newline='') as csv_file:
             previous_row = row                        
 
               
+plt.scatter(list_date_avg, list_N02_avg)
+plt.xticks(rotation=90)
+#plt.xticks(rotation=45, ha='right')
+plt.locator_params(axis='x', nbins=6)
 #plt.scatter(list_timestamp, list_N02_raw)
-#plt.scatter(list_timestamp, list_PM25_raw)
 
 
 
