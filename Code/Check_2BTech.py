@@ -4,6 +4,7 @@ import csv
 import glob
 import os
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 ## Define functions
 def empty(parameter):
@@ -100,11 +101,12 @@ with open('data.csv', newline='') as csv_file:
                 previous_date = previous_row[16]
                 time = row[17]
                 timestamp = date + " " + time
+                dt_timestamp = datetime.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
                 hour = time.split(':')[0]
                 minute = time.split(':')[1]
                 second = time.split(':')[2]
                 #print(time, hour, minute, second)
-                
+                #date_obj = datetime.strptime(date_str, date_format)
                 # list_N02_raw.append(float(N02))
                 # list_PM1_raw.append(float(PM1))
                 # list_PM25_raw.append(float(PM25))
@@ -112,7 +114,8 @@ with open('data.csv', newline='') as csv_file:
                 # list_Ozone_raw.append(float(Ozone))
                 
                 list_date.append(date)
-                list_timestamp.append(timestamp)
+                #list_timestamp.append(timestamp)
+                list_timestamp.append(dt_timestamp)
                 
                 if not_available(N02): 
                     N02 = None
@@ -229,10 +232,15 @@ with open('data.csv', newline='') as csv_file:
             previous_row = row                        
 
               
-plt.scatter(list_date_avg, list_N02_avg)
-plt.xticks(rotation=90)
+
+plt.scatter(list_timestamp, list_N02_raw, alpha=0.5, marker="x")
+#plt.scatter(list_date_avg, list_N02_avg)
+plt.xticks(range(len(list_N02_raw)), list_timestamp)
+#plt.xticks(range(len(list_N02_avg)), list_date_avg)
+plt.xticks(rotation=45)
+plt.ylim(-80, -30)
 #plt.xticks(rotation=45, ha='right')
-plt.locator_params(axis='x', nbins=6)
+#plt.locator_params(axis='x', nbins=12)
 #plt.scatter(list_timestamp, list_N02_raw)
 
 
@@ -240,7 +248,7 @@ plt.locator_params(axis='x', nbins=6)
 
 
 
-### Notes 
+### Code 
 # =============================================================================
 # ## Test how to go through one 2BTech File 
 # with open('../Data/2BTech/1284_2023-12-1.txt', newline='') as txt_file:
@@ -545,8 +553,9 @@ plt.locator_params(axis='x', nbins=6)
                 
 #             previous_row = row   
 
-
-                
-
+### Notes
+## how to convert a string in a specific format to a datetime object
+## Link: https://www.datacamp.com/tutorial/converting-strings-datetime-objects             
+## date_obj = datetime.strptime(date_str, date_format)
 
                         
