@@ -92,6 +92,7 @@ with open('data.csv', newline='') as csv_file:
                 diff = current_value - previous_value
                 #print(i, difference, row) 
                 N02 = row[1]
+                previous_
                 C0 = row[2]
                 PM1 = row[3]
                 PM25 = row[4]
@@ -101,11 +102,11 @@ with open('data.csv', newline='') as csv_file:
                 previous_date = previous_row[16]
                 time = row[17]
                 timestamp = date + " " + time
-                dt_timestamp = datetime.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+                #dt_timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
                 hour = time.split(':')[0]
                 minute = time.split(':')[1]
                 second = time.split(':')[2]
-                #print(time, hour, minute, second)
+                #print(tifindme, hour, minute, second)
                 #date_obj = datetime.strptime(date_str, date_format)
                 # list_N02_raw.append(float(N02))
                 # list_PM1_raw.append(float(PM1))
@@ -127,6 +128,8 @@ with open('data.csv', newline='') as csv_file:
                     
                 if diff > 0 or diff < 0:
                     avgN02 = sumN02/valid_N02
+                    minN02 = small
+                    minN02 = large
                     #print(avgN02, previous_date)
                     #list_averages.append(previous_date)
                     list_date_avg.append(previous_date)
@@ -150,10 +153,11 @@ with open('data.csv', newline='') as csv_file:
                     #print(avgC0)
                     list_C0_avg.append(avgC0)
                     sumC0 = 0 #resart after the 24 hours
-                    # if C0 == None:
-                    #     sumC0 = 0
-                    # if C0 != None:
-                    #     sumC0 += float(C0)   
+                    valid_C0 = 0
+                    if C0 == None:
+                        sumC0 = 0
+                    if C0 != None:
+                        sumC0 += float(C0)   
                 elif diff == 0 and C0 == None:
                       pass
                 elif diff == 0 and C0 != None:
@@ -168,10 +172,11 @@ with open('data.csv', newline='') as csv_file:
                     #print(avgPM1)
                     list_PM1_avg.append(avgPM1)
                     sumPM1 = 0 #resart after the 24 hours
-                    # if PM1 == None:
-                    #     sumPM1 = 0
-                    # if PM1 != None:
-                    #     sumPM1 += float(PM1)  
+                    valid_PM1 = 0
+                    if PM1 == None:
+                        sumPM1 = 0
+                    if PM1 != None:
+                        sumPM1 += float(PM1)  
                 elif diff == 0 and PM1 == None:
                     pass
                 elif diff == 0 and PM1 != None:
@@ -185,10 +190,11 @@ with open('data.csv', newline='') as csv_file:
                     #print(avgPM25)
                     list_PM25_avg.append(avgPM25)
                     sumPM25 = 0 #resart after the 24 hours
-                    # if PM25 == None:
-                    #     sumPM25 = 0
-                    # if PM25 != None:
-                    #     sumPM25 += float(PM25)   
+                    valid_N02 = 0
+                    if PM25 == None:
+                        sumPM25 = 0
+                    if PM25 != None:
+                        sumPM25 += float(PM25)   
                 elif diff == 0 and PM25 == None:
                     pass
                 elif diff == 0 and PM25 != None:
@@ -202,10 +208,10 @@ with open('data.csv', newline='') as csv_file:
                     #print(avgC02)
                     list_C02_avg.append(avgC02)
                     sumC02 = 0 #resart after the 24 hours
-                    # if C02 == None:
-                    #     sumC02 = 0
-                    # if C02 != None:
-                    #     sumC02 += float(C02)  
+                    if C02 == None:
+                        sumC02 = 0
+                    if C02 != None:
+                        sumC02 += float(C02)  
                 elif diff == 0 and C02 == None:
                     pass
                 elif diff == 0 and C02 != None:
@@ -219,10 +225,10 @@ with open('data.csv', newline='') as csv_file:
                     #print(previous_date, avgOzone)
                     list_Ozone_avg.append(avgOzone)
                     sumOzone = 0 #resart after the 24 hours
-                    # if Ozone == None:
-                    #     sumOzone = 0
-                    # if Ozone != None:
-                    #     sumOzone += float(Ozone)   
+                    if Ozone == None:
+                        sumOzone = 0
+                    if Ozone != None:
+                        sumOzone += float(Ozone)   
                 elif diff == 0 and Ozone == None:
                     pass
                 elif diff == 0 and Ozone != None:
@@ -231,18 +237,23 @@ with open('data.csv', newline='') as csv_file:
                 
             previous_row = row                        
 
-              
+#plt.style.use('classic')           
+## plot with only N02
+#plt.scatter(list_timestamp, list_N02_raw, alpha=0.5, marker="x")
+plt.scatter(list_date_avg, list_N02_avg)
+#plt.xticks(range(len(list_N02_raw)), list_timestamp)
+plt.xticks(range(len(list_N02_avg)), list_date_avg)
+#plt.xticks(rotation=45)
+#plt.ylim(-80, -30)
+plt.xlabel("Date")
+plt.ylabel("NO$_{2}$ Concentrations (ppb)")
+plt.xticks(rotation=45, ha='right')
+plt.locator_params(axis='x', nbins=12)
+plt.grid()
 
-plt.scatter(list_timestamp, list_N02_raw, alpha=0.5, marker="x")
-#plt.scatter(list_date_avg, list_N02_avg)
-plt.xticks(range(len(list_N02_raw)), list_timestamp)
-#plt.xticks(range(len(list_N02_avg)), list_date_avg)
-plt.xticks(rotation=45)
-plt.ylim(-80, -30)
-#plt.xticks(rotation=45, ha='right')
-#plt.locator_params(axis='x', nbins=12)
 #plt.scatter(list_timestamp, list_N02_raw)
 
+## Subplot with all PM1, PM25, N02, C0, C02, Ozone
 
 
 
