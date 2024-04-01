@@ -61,6 +61,21 @@ list_C02_avg = []
 list_Ozone_avg = []
 list_date_avg = []
 
+list_N02_min = []
+list_C0_min = []
+list_PM1_min = []
+list_PM25_min = []
+list_C02_min = []
+list_Ozone_min = []
+#list_date_min = []
+
+list_N02_max = []
+ist_C0_max = []
+list_PM1_max = []
+list_PM25_max = []
+list_C02_max = []
+list_Ozone_max = []
+
 sumN02 = 0
 valid_N02 = 0
 
@@ -79,11 +94,15 @@ valid_C02 = 0
 sumOzone = 0
 valid = 0
 
+large_N02 = -float('inf')
+small_N02 = float('inf')
+
 ## Test how to go through one 2BTech File 
 with open('data.csv', newline='') as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
     previous_row = None
+    #previous_N02 = None
     for row in reader:
             if previous_row is not None:
                 #print(row)
@@ -91,8 +110,10 @@ with open('data.csv', newline='') as csv_file:
                 previous_value = float(previous_row[16].split("-")[2])
                 diff = current_value - previous_value
                 #print(i, difference, row) 
-                N02 = row[1]
-                previous_
+                previous_N02 = previous_row[1]
+                N02 = float(row[1])
+                #large_N02 = 
+                #small_N02 = 
                 C0 = row[2]
                 PM1 = row[3]
                 PM25 = row[4]
@@ -116,7 +137,7 @@ with open('data.csv', newline='') as csv_file:
                 
                 list_date.append(date)
                 #list_timestamp.append(timestamp)
-                list_timestamp.append(dt_timestamp)
+                #list_timestamp.append(dt_timestamp)
                 
                 if not_available(N02): 
                     N02 = None
@@ -128,14 +149,18 @@ with open('data.csv', newline='') as csv_file:
                     
                 if diff > 0 or diff < 0:
                     avgN02 = sumN02/valid_N02
-                    minN02 = small
-                    minN02 = large
+                    minN02 = small_N02
+                    maxN02 = large_N02
                     #print(avgN02, previous_date)
                     #list_averages.append(previous_date)
                     list_date_avg.append(previous_date)
                     list_N02_avg.append(avgN02)
+                    list_N02_min.append(minN02)
+                    list_N02_max.append(maxN02)
                     sumN02 = 0 #resart after the 24 hours
                     valid_N02 = 0
+                    large_N02 = -float('inf')
+                    small_N02 = float('inf')
                     if N02 == None:
                         sumN02 += 0
                     if N02 != None:
@@ -145,7 +170,14 @@ with open('data.csv', newline='') as csv_file:
                 elif diff == 0 and N02 != None:
                     sumN02 += float(N02)        
                     valid_N02 += 1
-                 
+                    
+                    if N02 < small_N02:
+                        small_N02 = N02
+                    elif N02 > large_N02:
+                        large_N02 = N02
+                    
+                
+                    
                 if not_available(C0): 
                     C0 = None
                 if diff > 0 or diff < 0:
@@ -161,8 +193,8 @@ with open('data.csv', newline='') as csv_file:
                 elif diff == 0 and C0 == None:
                       pass
                 elif diff == 0 and C0 != None:
-                        sumC0 += float(C0)        
-                        valid_C0 += 1
+                     sumC0 += float(C0)        
+                     valid_C0 += 1
 
                
                 if not_available(PM1): 
@@ -234,22 +266,27 @@ with open('data.csv', newline='') as csv_file:
                 elif diff == 0 and Ozone != None:
                       sumOzone += float(Ozone)        
                       valid += 1
+                      
+                     
                 
             previous_row = row                        
 
 #plt.style.use('classic')           
 ## plot with only N02
 #plt.scatter(list_timestamp, list_N02_raw, alpha=0.5, marker="x")
-plt.scatter(list_date_avg, list_N02_avg)
+plt.scatter(list_date_avg, list_N02_min)
+plt.scatter(list_date_avg, list_N02_avg, color="red")
+plt.scatter(list_date_avg, list_N02_max, color="green")
 #plt.xticks(range(len(list_N02_raw)), list_timestamp)
 plt.xticks(range(len(list_N02_avg)), list_date_avg)
 #plt.xticks(rotation=45)
-#plt.ylim(-80, -30)
+plt.ylim(-200, 200)
 plt.xlabel("Date")
 plt.ylabel("NO$_{2}$ Concentrations (ppb)")
 plt.xticks(rotation=45, ha='right')
 plt.locator_params(axis='x', nbins=12)
 plt.grid()
+plt.legend(['Miniumum', 'Average', "Maximum"])
 
 #plt.scatter(list_timestamp, list_N02_raw)
 
