@@ -70,7 +70,7 @@ list_Ozone_min = []
 #list_date_min = []
 
 list_N02_max = []
-ist_C0_max = []
+list_C0_max = []
 list_PM1_max = []
 list_PM25_max = []
 list_C02_max = []
@@ -96,6 +96,21 @@ valid = 0
 
 large_N02 = -float('inf')
 small_N02 = float('inf')
+
+large_C0 = -float('inf')
+small_C0 = float('inf')
+
+large_PM1 = -float('inf')
+small_PM1 = float('inf')
+
+large_PM25 = -float('inf')
+small_PM25 = float('inf')
+
+large_C02 = -float('inf')
+small_C02 = float('inf')
+
+large_Ozone = -float('inf')
+small_Ozone = float('inf')
 
 ## Test how to go through one 2BTech File 
 with open('data.csv', newline='') as csv_file:
@@ -177,124 +192,257 @@ with open('data.csv', newline='') as csv_file:
                         large_N02 = N02
                     
                 
-                    
+                #C0 if statements    
                 if not_available(C0): 
                     C0 = None
+                
+                if C0 == None:
+                    list_N02_raw.append((C0))
+                if C0 != None:
+                    list_N02_raw.append(float(C0))
+                    
                 if diff > 0 or diff < 0:
-                    avgC0 = sumC0/valid_C0
-                    #print(avgC0)
+                    avgC0 = sumN02/valid_C02
+                    minC0 = small_C0
+                    maxC0 = large_C0
+                    #print(avgN02, previous_date)
+                    #list_averages.append(previous_date)
+                    #list_date_avg.append(previous_date)
                     list_C0_avg.append(avgC0)
+                    list_C0_min.append(minC0)
+                    list_C0_max.append(maxC0)
                     sumC0 = 0 #resart after the 24 hours
                     valid_C0 = 0
+                    large_C0 = -float('inf')
+                    small_C0 = float('inf')
                     if C0 == None:
-                        sumC0 = 0
+                        sumC0 += 0
                     if C0 != None:
-                        sumC0 += float(C0)   
+                        sumC0 += float(C0) 
                 elif diff == 0 and C0 == None:
-                      pass
+                    pass
                 elif diff == 0 and C0 != None:
-                     sumC0 += float(C0)        
-                     valid_C0 += 1
+                    sumC0 += float(C0)        
+                    valid_C0 += 1
+                    
+                    if C0 < small_C0:
+                        small_C0 = C0
+                    elif C0 > large_C0:
+                        large_C0 = C0
 
-               
+                #PM1 if statements
                 if not_available(PM1): 
                     PM1 = None
+                
+                if PM1 == None:
+                    list_PM1_raw.append((PM1))
+                if PM1 != None:
+                    list_PM1_raw.append(float(PM1))
+                    
                 if diff > 0 or diff < 0:
-                    avgPM1 = sumPM1/valid_PM1
-                    #print(avgPM1)
+                    avgPM1 = sumN02/valid_PM1
+                    minPM1 = small_PM1
+                    maxPM1 = large_PM1
+                    #print(avgN02, previous_date)
+                    #list_averages.append(previous_date)
+                    #list_date_avg.append(previous_date)
                     list_PM1_avg.append(avgPM1)
+                    list_PM1_min.append(minPM1)
+                    list_PM1_max.append(maxPM1)
                     sumPM1 = 0 #resart after the 24 hours
                     valid_PM1 = 0
+                    large_PM1 = -float('inf')
+                    small_PM1 = float('inf')
                     if PM1 == None:
-                        sumPM1 = 0
+                        sumPM1 += 0
                     if PM1 != None:
-                        sumPM1 += float(PM1)  
+                        sumPM1 += float(PM1) 
                 elif diff == 0 and PM1 == None:
                     pass
                 elif diff == 0 and PM1 != None:
-                      sumPM1 += float(PM1)        
-                      valid_PM1 += 1
-               
-                if not_available(PM25): 
-                    PM25 = None
-                if diff > 0 or diff < 0:
-                    avgPM25 = sumPM25/valid_PM25
-                    #print(avgPM25)
-                    list_PM25_avg.append(avgPM25)
-                    sumPM25 = 0 #resart after the 24 hours
-                    valid_N02 = 0
-                    if PM25 == None:
-                        sumPM25 = 0
-                    if PM25 != None:
-                        sumPM25 += float(PM25)   
-                elif diff == 0 and PM25 == None:
-                    pass
-                elif diff == 0 and PM25 != None:
-                      sumPM25 += float(PM25)        
-                      valid_PM25 += 1
+                    sumPM1 += float(PM1)        
+                    valid_PM1 += 1
+                    
+                    if PM1 < small_PM1:
+                        small_PM1 = PM1
+                    elif PM1 > large_PM1:
+                        large_PM1 = PM1
+                      
+                #PM25 if statements
+                if not_available(PM1): 
+                    PM1 = None
                 
-                if not_available(C02): 
-                    C02 = None
+                if PM1 == None:
+                    list_PM1_raw.append((PM1))
+                if PM1 != None:
+                    list_PM1_raw.append(float(PM1))
+                    
                 if diff > 0 or diff < 0:
-                    avgC02 = sumC02/valid_C02
-                    #print(avgC02)
-                    list_C02_avg.append(avgC02)
-                    sumC02 = 0 #resart after the 24 hours
-                    if C02 == None:
-                        sumC02 = 0
-                    if C02 != None:
-                        sumC02 += float(C02)  
-                elif diff == 0 and C02 == None:
+                    avgPM1 = sumN02/valid_PM1
+                    minPM1 = small_PM1
+                    maxPM1 = large_PM1
+                    #print(avgN02, previous_date)
+                    #list_averages.append(previous_date)
+                    #list_date_avg.append(previous_date)
+                    list_PM1_avg.append(avgPM1)
+                    list_PM1_min.append(minPM1)
+                    list_PM1_max.append(maxPM1)
+                    sumPM1 = 0 #resart after the 24 hours
+                    valid_PM1 = 0
+                    large_PM1 = -float('inf')
+                    small_PM1 = float('inf')
+                    if PM1 == None:
+                        sumPM1 += 0
+                    if PM1 != None:
+                        sumPM1 += float(PM1) 
+                elif diff == 0 and PM1 == None:
                     pass
-                elif diff == 0 and C02 != None:
-                      sumC02 += float(C02)        
-                      valid_C02 += 1
+                elif diff == 0 and PM1 != None:
+                    sumPM1 += float(PM1)        
+                    valid_PM1 += 1
+                    
+                    if PM1 < small_PM1:
+                        small_PM1 = PM1
+                    elif PM1 > large_PM1:
+                        large_PM1 = PM1
+                      
+                #C02 if statements
+                if not_available(PM1): 
+                    PM1 = None
                 
-                if not_available(Ozone): 
-                    Ozone = None
+                if PM1 == None:
+                    list_PM1_raw.append((PM1))
+                if PM1 != None:
+                    list_PM1_raw.append(float(PM1))
+                    
                 if diff > 0 or diff < 0:
-                    avgOzone = sumOzone/valid
-                    #print(previous_date, avgOzone)
-                    list_Ozone_avg.append(avgOzone)
-                    sumOzone = 0 #resart after the 24 hours
-                    if Ozone == None:
-                        sumOzone = 0
-                    if Ozone != None:
-                        sumOzone += float(Ozone)   
-                elif diff == 0 and Ozone == None:
+                    avgPM1 = sumN02/valid_PM1
+                    minPM1 = small_PM1
+                    maxPM1 = large_PM1
+                    #print(avgN02, previous_date)
+                    #list_averages.append(previous_date)
+                    #list_date_avg.append(previous_date)
+                    list_PM1_avg.append(avgPM1)
+                    list_PM1_min.append(minPM1)
+                    list_PM1_max.append(maxPM1)
+                    sumPM1 = 0 #resart after the 24 hours
+                    valid_PM1 = 0
+                    large_PM1 = -float('inf')
+                    small_PM1 = float('inf')
+                    if PM1 == None:
+                        sumPM1 += 0
+                    if PM1 != None:
+                        sumPM1 += float(PM1) 
+                elif diff == 0 and PM1 == None:
                     pass
-                elif diff == 0 and Ozone != None:
-                      sumOzone += float(Ozone)        
-                      valid += 1
+                elif diff == 0 and PM1 != None:
+                    sumPM1 += float(PM1)        
+                    valid_PM1 += 1
+                    
+                    if PM1 < small_PM1:
+                        small_PM1 = PM1
+                    elif PM1 > large_PM1:
+                        large_PM1 = PM1
+                      
+                #Ozone if statements 
+                if not_available(PM1): 
+                    PM1 = None
+                
+                if PM1 == None:
+                    list_PM1_raw.append((PM1))
+                if PM1 != None:
+                    list_PM1_raw.append(float(PM1))
+                    
+                if diff > 0 or diff < 0:
+                    avgPM1 = sumN02/valid_PM1
+                    minPM1 = small_PM1
+                    maxPM1 = large_PM1
+                    #print(avgN02, previous_date)
+                    #list_averages.append(previous_date)
+                    #list_date_avg.append(previous_date)
+                    list_PM1_avg.append(avgPM1)
+                    list_PM1_min.append(minPM1)
+                    list_PM1_max.append(maxPM1)
+                    sumPM1 = 0 #resart after the 24 hours
+                    valid_PM1 = 0
+                    large_PM1 = -float('inf')
+                    small_PM1 = float('inf')
+                    if PM1 == None:
+                        sumPM1 += 0
+                    if PM1 != None:
+                        sumPM1 += float(PM1) 
+                elif diff == 0 and PM1 == None:
+                    pass
+                elif diff == 0 and PM1 != None:
+                    sumPM1 += float(PM1)        
+                    valid_PM1 += 1
+                    
+                    if PM1 < small_PM1:
+                        small_PM1 = PM1
+                    elif PM1 > large_PM1:
+                        large_PM1 = PM1
                       
                      
                 
             previous_row = row                        
 
 #plt.style.use('classic')           
-## plot with only N02
+## plot with N02
 #plt.scatter(list_timestamp, list_N02_raw, alpha=0.5, marker="x")
-plt.scatter(list_date_avg, list_N02_min)
-plt.scatter(list_date_avg, list_N02_avg, color="red")
-plt.scatter(list_date_avg, list_N02_max, color="green")
-#plt.xticks(range(len(list_N02_raw)), list_timestamp)
-plt.xticks(range(len(list_N02_avg)), list_date_avg)
-#plt.xticks(rotation=45)
-plt.ylim(-200, 200)
-plt.xlabel("Date")
-plt.ylabel("NO$_{2}$ Concentrations (ppb)")
-plt.xticks(rotation=45, ha='right')
-plt.locator_params(axis='x', nbins=12)
-plt.grid()
-plt.legend(['Miniumum', 'Average', "Maximum"])
+# plt.scatter(list_date_avg, list_N02_min)
+# plt.scatter(list_date_avg, list_N02_avg, color="red")
+# plt.scatter(list_date_avg, list_N02_max, color="green")
+# #plt.xticks(range(len(list_N02_raw)), list_timestamp)
+# plt.xticks(range(len(list_N02_avg)), list_date_avg)
+# #plt.xticks(rotation=45)
+# plt.ylim(-200, 200)
+# plt.xlabel("Date")
+# plt.ylabel("NO$_{2}$ Concentrations (ppb)")
+# plt.xticks(rotation=45, ha='right')
+# plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+# plt.legend(['Miniumum', 'Average', "Maximum"])
 
-#plt.scatter(list_timestamp, list_N02_raw)
+## plot with CO
+
+## plot with C02
+
+## plot with Ozone
+
+## plot with PM1
+
+## plot with PM25
+
 
 ## Subplot with all PM1, PM25, N02, C0, C02, Ozone
+fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6)
+ax1.scatter(list_date_avg, list_N02_avg)
+ax1.set_ylim(-200, 200)
+ax1.set_ylabel("NO$_{2}$")
 
+#ax2.subplot(6, 2)
+ax2.scatter(list_date_avg, list_C0_avg)
+ax2.set_ylabel("CO")
 
+#plt.subplot(6, 1, 3)
+ax3.scatter(list_date_avg, list_C02_avg)
+ax3.set_ylabel("CO$_{2}$")
 
+#plt.subplot(6, 1, 4)
+ax4.scatter(list_date_avg, list_Ozone_avg)
+ax4.set_ylabel("O$_{3}$")
 
+#plt.subplot(6, 1, 5)
+ax5.scatter(list_date_avg, list_PM1_avg)
+ax5.set_ylabel("PM$_{1}$ (ppb)")
+
+#plt.subplot(6, 1, 6)
+ax6.scatter(list_date_avg, list_PM25_avg)
+ax6.set_ylabel("PM$_{25}$ (ppb)")
+
+ax6.set_xlabel("Date")
+ax6.tick_params(axis='x', rotation=45)
+ax6.locator_params(axis='x', nbins=12)
 
 ### Code 
 # =============================================================================
