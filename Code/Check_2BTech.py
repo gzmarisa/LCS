@@ -52,6 +52,7 @@ list_Ozone_raw = []
 list_date = []
 list_time = []
 list_timestamp = []
+list_dt_timestamp = []
 
 list_N02_avg = []
 list_C0_avg = []
@@ -138,7 +139,7 @@ with open('data.csv', newline='') as csv_file:
                 previous_date = previous_row[16]
                 time = row[17]
                 timestamp = date + " " + time
-                #dt_timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+                dt_timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
                 hour = time.split(':')[0]
                 minute = time.split(':')[1]
                 second = time.split(':')[2]
@@ -152,7 +153,7 @@ with open('data.csv', newline='') as csv_file:
                 
                 list_date.append(date)
                 #list_timestamp.append(timestamp)
-                #list_timestamp.append(dt_timestamp)
+                list_dt_timestamp.append(dt_timestamp)
                 
                 if not_available(N02): 
                     N02 = None
@@ -203,7 +204,7 @@ with open('data.csv', newline='') as csv_file:
                     C0 = float(C0)
                     
                 if diff > 0 or diff < 0:
-                    avgC0 = sumN02/valid_C0
+                    avgC0 = sumC0/valid_C0
                     minC0 = small_C0
                     maxC0 = large_C0
                     #print(avgN02, previous_date)
@@ -242,7 +243,7 @@ with open('data.csv', newline='') as csv_file:
                     PM1 = float(PM1)
                     
                 if diff > 0 or diff < 0:
-                    avgPM1 = sumN02/valid_PM1
+                    avgPM1 = sumPM1/valid_PM1
                     minPM1 = small_PM1
                     maxPM1 = large_PM1
                     #print(avgN02, previous_date)
@@ -281,7 +282,7 @@ with open('data.csv', newline='') as csv_file:
                     PM25 = float(PM25)
                     
                 if diff > 0 or diff < 0:
-                    avgPM25 = sumN02/valid_PM25
+                    avgPM25 = sumPM25/valid_PM25
                     minPM25 = small_PM25
                     maxPM25 = large_PM25
                     #print(avgN02, previous_date)
@@ -320,12 +321,15 @@ with open('data.csv', newline='') as csv_file:
                     C02 = float(C02)
                     
                 if diff > 0 or diff < 0:
-                    avgC02 = sumC02/valid_C02
+                    if valid_C02 == 0:
+                        avg_C02 = None
+                    if valid_C02 != 0:
+                        avgC02 = sumC02/valid_C02
                     minC02 = small_C02
                     maxC02 = large_C02
-                    #print(avgN02, previous_date)
-                    #list_averages.append(previous_date)
-                    #list_date_avg.append(previous_date)
+                        #print(avgN02, previous_date)
+                        #list_averages.append(previous_date)
+                        #list_date_avg.append(previous_date)
                     list_C02_avg.append(avgC02)
                     list_C02_min.append(minC02)
                     list_C02_max.append(maxC02)
@@ -360,7 +364,11 @@ with open('data.csv', newline='') as csv_file:
                     Ozone = float(Ozone)
                     
                 if diff > 0 or diff < 0:
-                    avgOzone = sumN02/valid_Ozone
+                    if valid_Ozone == 0:
+                        avgOzone = None
+                    if valid_Ozone != 0:
+                        avgOzone = sumOzone/valid_Ozone
+                    #avgOzone = sumOzone/valid_Ozone
                     minOzone = small_Ozone
                     maxOzone = large_Ozone
                     #print(avgN02, previous_date)
@@ -392,8 +400,22 @@ with open('data.csv', newline='') as csv_file:
                 
             previous_row = row                        
 
-#plt.style.use('classic')           
-## plot with N02
+## NO2 Plots 
+## N02 Raw Data     
+# plt.scatter(list_dt_timestamp, list_N02_raw, alpha=0.5, marker="x")
+# #plt.xticks(range(len(list_N02_raw)), list_date_avg)
+# # #plt.xticks(rotation=45)
+# #plt.ylim(-200, 200)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("NO$_{2}$ (ppb)")
+# plt.title("NO$_{2}$ Raw Data")
+
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+
+
+## NO2 Daily average
 #plt.scatter(list_timestamp, list_N02_raw, alpha=0.5, marker="x")
 # plt.scatter(list_date_avg, list_N02_min)
 # plt.scatter(list_date_avg, list_N02_avg, color="red")
@@ -403,67 +425,153 @@ with open('data.csv', newline='') as csv_file:
 # #plt.xticks(rotation=45)
 # plt.ylim(-200, 200)
 # plt.xlabel("Date")
-# plt.ylabel("NO$_{2}$ Concentration (ppb)")
+# plt.ylabel("NO$_{2}$ (ppb)")
+# plt.title("NO$_{2}$ Daily Data")
 # plt.xticks(rotation=45, ha='right')
 # plt.locator_params(axis='x', nbins=12)
 # plt.grid()
 # plt.legend(['Miniumum', 'Average', "Maximum"])
 
-## plot with CO
-plt.scatter(list_timestamp, list_C0_raw, alpha=0.5, marker="x")
-plt.scatter(list_date_avg, list_C0_min)
-plt.scatter(list_date_avg, list_C0_avg, color="red")
-plt.scatter(list_date_avg, list_C0_max, color="green")
-#plt.xticks(range(len(list_C0_raw)), list_timestamp)
-plt.xticks(range(len(list_C0_avg)), list_date_avg)
-#plt.xticks(rotation=45)
-#plt.ylim(-200, 200)
-plt.xlabel("Date")
-plt.ylabel("C0 Concentration (ppb)")
-plt.xticks(rotation=45, ha='right')
-plt.locator_params(axis='x', nbins=12)
-plt.grid()
-plt.legend(['Miniumum', 'Average', "Maximum"])
+## Co Plots
+## CO Raw Data     
+## plot with C0
+# plt.scatter(list_dt_timestamp, list_C0_raw, alpha=0.5, marker="x")
+# #plt.xticks(range(len(list_C0_raw)), list_date_avg)
+# # #plt.xticks(rotation=45)
+# plt.ylim(-2, 2)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("CO$ (ppm)")
+# plt.title("CO Raw Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
 
 
-## plot with C02
+## CO Daily Data
+# #plt.scatter(list_timestamp, list_C0_raw, alpha=0.5, marker="x")
+# plt.scatter(list_date_avg, list_C0_min)
+# plt.scatter(list_date_avg, list_C0_avg, color="red")
+# plt.scatter(list_date_avg, list_C0_max, color="green")
+# #plt.xticks(range(len(list_C0_raw)), list_timestamp)
+# plt.xticks(range(len(list_C0_avg)), list_date_avg)
+# #plt.xticks(rotation=45)
+# plt.ylim(-2, 2)
+# plt.xlabel("Date")
+# plt.ylabel("CO (ppm)")
+# plt.title("CO Daily Data")
+# plt.xticks(rotation=45, ha='right')
+# plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+# plt.legend(['Miniumum', 'Average', "Maximum"])
 
-## plot with Ozone
+## PM1 Plots
+## PM1 Raw Data
+# plt.scatter(list_dt_timestamp, list_PM1_raw, alpha=0.5, marker="x")
+# #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{1}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{1}$ Raw Data")
 
-## plot with PM1
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
 
-## plot with PM25
+## PM1 Daily Data
+# plt.scatter(list_date_avg, list_PM1_min)
+# plt.scatter(list_date_avg, list_PM1_avg, color="red")
+# plt.scatter(list_date_avg, list_PM1_max, color="green")
+# #plt.xticks(range(len(list_C0_raw)), list_timestamp)
+# plt.xticks(range(len(list_PM1_avg)), list_date_avg)
+# #plt.xticks(rotation=45)
+# #plt.ylim(0, 100)
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{1}$ ($\mu$g/m$^3$)")
+# # plt.title("PM$_{1}$ Daily Data")
+# plt.xticks(rotation=45, ha='right')
+# plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+# plt.legend(['Miniumum', 'Average', "Maximum"])
+
+## PM25 Plots
+## PM25 Raw Data
+
+
+## PM25 Daily Data
+# plt.scatter(list_date_avg, list_PM25_min)
+# plt.scatter(list_date_avg, list_PM25_avg, color="red")
+# plt.scatter(list_date_avg, list_PM25_max, color="green")
+# plt.xticks(range(len(list_PM25_avg)), list_date_avg)
+# #plt.ylim(0, 100)
+# plt.xlabel("Date")
+# plt.ylabel("PM25 (ug/m3)")
+# plt.xticks(rotation=45, ha='right')
+# plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+# plt.legend(['Miniumum', 'Average', "Maximum"])
+
+## C02 Data
+## C02 Raw Data
+
+## C02 Daily Data 
+# plt.scatter(list_date_avg, list_C02_min)
+# plt.scatter(list_date_avg, list_C02_avg, color="red")
+# plt.scatter(list_date_avg, list_C02_max, color="green")
+# plt.xticks(range(len(list_C0_avg)), list_date_avg)
+# #plt.ylim(0, 100)
+# plt.xlabel("Date")
+# plt.ylabel("CO2 (ppm)")
+# plt.xticks(rotation=45, ha='right')
+# plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+# plt.legend(['Miniumum', 'Average', "Maximum"])
+
+## Ozone Data
+## Ozone Raw Data
+
+
+## Ozone Daily Data 
+# plt.scatter(list_date_avg, list_Ozone_min)
+# plt.scatter(list_date_avg, list_Ozone_avg, color="red")
+# plt.scatter(list_date_avg, list_Ozone_max, color="green")
+# plt.xticks(range(len(list_Ozone_avg)), list_date_avg)
+# #plt.ylim(0, 100)
+# plt.xlabel("Date")
+# plt.ylabel("Ozone (ppb)")
+# plt.xticks(rotation=45, ha='right')
+# plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+# plt.legend(['Miniumum', 'Average', "Maximum"])
 
 
 ## Subplot with all PM1, PM25, N02, C0, C02, Ozone
-fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6)
-ax1.scatter(list_date_avg, list_N02_avg)
-ax1.set_ylim(-200, 200)
-ax1.set_ylabel("NO$_{2}$")
+# fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6)
+# ax1.scatter(list_date_avg, list_N02_avg)
+# ax1.set_ylim(-200, 200)
+# ax1.set_ylabel("NO$_{2}$")
 
-#ax2.subplot(6, 2)
-ax2.scatter(list_date_avg, list_C0_avg)
-ax2.set_ylabel("CO")
+# #ax2.subplot(6, 2)
+# ax2.scatter(list_date_avg, list_C0_avg)
+# ax2.set_ylabel("CO")
 
-#plt.subplot(6, 1, 3)
-ax3.scatter(list_date_avg, list_C02_avg)
-ax3.set_ylabel("CO$_{2}$")
+# #plt.subplot(6, 1, 3)
+# ax3.scatter(list_date_avg, list_C02_avg)
+# ax3.set_ylabel("CO$_{2}$")
 
-#plt.subplot(6, 1, 4)
-ax4.scatter(list_date_avg, list_Ozone_avg)
-ax4.set_ylabel("O$_{3}$")
+# #plt.subplot(6, 1, 4)
+# ax4.scatter(list_date_avg, list_Ozone_avg)
+# ax4.set_ylabel("O$_{3}$")
 
-#plt.subplot(6, 1, 5)
-ax5.scatter(list_date_avg, list_PM1_avg)
-ax5.set_ylabel("PM$_{1}$ (ppb)")
+# #plt.subplot(6, 1, 5)
+# ax5.scatter(list_date_avg, list_PM1_avg)
+# ax5.set_ylabel("PM$_{1}$ (ppb)")
 
-#plt.subplot(6, 1, 6)
-ax6.scatter(list_date_avg, list_PM25_avg)
-ax6.set_ylabel("PM$_{25}$ (ppb)")
+# #plt.subplot(6, 1, 6)
+# ax6.scatter(list_date_avg, list_PM25_avg)
+# ax6.set_ylabel("PM$_{25}$ (ppb)")
 
-ax6.set_xlabel("Date")
-ax6.tick_params(axis='x', rotation=45)
-ax6.locator_params(axis='x', nbins=12)
+# ax6.set_xlabel("Date")
+# ax6.tick_params(axis='x', rotation=45)
+# ax6.locator_params(axis='x', nbins=12)
 
 ### Code 
 # =============================================================================
