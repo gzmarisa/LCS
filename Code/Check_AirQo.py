@@ -39,10 +39,11 @@ with open('../Data/AirQo/Test/20240403_airquality-data_oneweek.txt', newline='')
         if i > 0:
             PM25 = row[3]
             timestamp = row[5]
+            date = timestamp.split(' ')[0]
             list_PM25_hourly.append(float(PM25))
 
             
-            #list_date.append(date)
+            list_date.append(date)
             list_timestamp.append(timestamp)
                 
                 
@@ -50,12 +51,12 @@ with open('../Data/AirQo/Test/20240403_airquality-data_oneweek.txt', newline='')
 
 
 plt.scatter(list_timestamp, list_PM25_hourly)
-plt.xticks(range(len(list_PM25_hourly)), list_timestamp)
+plt.xticks(range(len(list_PM25_hourly)), list_date)
 #plt.xticks(rotation=45)
 #plt.ylim(0, 200)
 plt.xlabel("Date")
-plt.ylabel("PM$_{25}$ Concentration (ug/m3)")
+plt.ylabel("PM$_{25}$ ($\mu$g/m$^3$)")
 plt.xticks(rotation=45, ha='right')
 plt.locator_params(axis='x', nbins=8)
-plt.xticks(x, ['2024-03-26', '2024-03-27', '2024-03-28', '2024-03-29', '2024-03-30', '2024-03-31', '2024-04-01','2024-04-02'])
+#plt.xticks(['2024-03-26', '2024-03-27', '2024-03-28', '2024-03-29', '2024-03-30', '2024-03-31', '2024-04-01','2024-04-02'])
 plt.grid()
