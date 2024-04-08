@@ -494,7 +494,14 @@ with open('data.csv', newline='') as csv_file:
 
 ## PM25 Plots
 ## PM25 Raw Data
-
+# plt.scatter(list_dt_timestamp, list_PM25_raw, alpha=0.5, marker="x")
+# #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{2.5}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{2.5}$ Raw Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
 
 ## PM25 Daily Data
 # plt.scatter(list_date_avg, list_PM25_min)
@@ -503,7 +510,8 @@ with open('data.csv', newline='') as csv_file:
 # plt.xticks(range(len(list_PM25_avg)), list_date_avg)
 # #plt.ylim(0, 100)
 # plt.xlabel("Date")
-# plt.ylabel("PM25 (ug/m3)")
+# plt.ylabel("PM$_{2.5}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{2.5}$ Daily Data")
 # plt.xticks(rotation=45, ha='right')
 # plt.locator_params(axis='x', nbins=12)
 # plt.grid()
@@ -511,15 +519,26 @@ with open('data.csv', newline='') as csv_file:
 
 ## C02 Data
 ## C02 Raw Data
+# plt.scatter(list_dt_timestamp, list_C02_raw, alpha=0.5, marker="x")
+# #plt.xticks(range(len(list_C0_raw)), list_date_avg)
+# # #plt.xticks(rotation=45)
+# #plt.ylim(-2, 2)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("CO$_{2}$ (ppm)")
+# plt.title("CO$_{2}$ Raw Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
 
 ## C02 Daily Data 
 # plt.scatter(list_date_avg, list_C02_min)
 # plt.scatter(list_date_avg, list_C02_avg, color="red")
 # plt.scatter(list_date_avg, list_C02_max, color="green")
 # plt.xticks(range(len(list_C0_avg)), list_date_avg)
-# #plt.ylim(0, 100)
+# # #plt.ylim(0, 100)
 # plt.xlabel("Date")
 # plt.ylabel("CO2 (ppm)")
+# plt.title("CO$_{2}$ Daily Data")
 # plt.xticks(rotation=45, ha='right')
 # plt.locator_params(axis='x', nbins=12)
 # plt.grid()
@@ -527,20 +546,28 @@ with open('data.csv', newline='') as csv_file:
 
 ## Ozone Data
 ## Ozone Raw Data
-
+plt.scatter(list_dt_timestamp, list_Ozone_raw, alpha=0.5, marker="x")
+#plt.ylim(0, 100)
+plt.xticks(rotation=45, ha='right')
+plt.xlabel("Date")
+plt.ylabel("Ozone (ppb)")
+plt.title("Ozone Raw Data")
+#plt.locator_params(axis='x', nbins=12)
+plt.grid()
 
 ## Ozone Daily Data 
-# plt.scatter(list_date_avg, list_Ozone_min)
-# plt.scatter(list_date_avg, list_Ozone_avg, color="red")
-# plt.scatter(list_date_avg, list_Ozone_max, color="green")
-# plt.xticks(range(len(list_Ozone_avg)), list_date_avg)
-# #plt.ylim(0, 100)
-# plt.xlabel("Date")
-# plt.ylabel("Ozone (ppb)")
-# plt.xticks(rotation=45, ha='right')
-# plt.locator_params(axis='x', nbins=12)
-# plt.grid()
-# plt.legend(['Miniumum', 'Average', "Maximum"])
+plt.scatter(list_date_avg, list_Ozone_min)
+plt.scatter(list_date_avg, list_Ozone_avg, color="red")
+plt.scatter(list_date_avg, list_Ozone_max, color="green")
+plt.xticks(range(len(list_Ozone_avg)), list_date_avg)
+#plt.ylim(0, 100)
+plt.xlabel("Date")
+plt.ylabel("Ozone (ppb)")
+plt.title("Ozone Daily Data")
+plt.xticks(rotation=45, ha='right')
+plt.locator_params(axis='x', nbins=12)
+plt.grid()
+plt.legend(['Miniumum', 'Average', "Maximum"])
 
 
 ## Subplot with all PM1, PM25, N02, C0, C02, Ozone
