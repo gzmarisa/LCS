@@ -9,18 +9,19 @@ Created on Thu Apr 18 12:12:58 2024
 import csv
 import glob
 import os
+import numpy as np 
 import matplotlib.pyplot as plt
 from datetime import datetime
 
 ## Define functions
-def empty(parameter):
-    return len(parameter) == 0
-
 def  not_available(parameter):
-    return parameter == 'N/A'
+    return parameter == ''
 
-def negative(parameter):
-    return float(parameter) < 0
+# def empty(parameter):
+#     return len(parameter) == 0
+
+# def negative(parameter):
+#     return float(parameter) < 0
 
 # Data paths 
 path_QuantAQ = '../Data/QuantAQ/'
@@ -30,103 +31,150 @@ path_QuantAQ = '../Data/QuantAQ/'
 list_PM1_raw = []
 list_PM25_raw = []
 list_PM10_raw = []
-list_timestamp_raw = []
+list_timestamp_sast_raw = []
 
 
 # Go through CSV file with raw QuantAQ data
 with open(path_QuantAQ + 'MOD-PM-00523-raw.csv', newline='') as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     for i,row in enumerate(reader):
-        if i > 0 and i < 10:
-            timestamp = row[1]
-            timestamp = timestamp.replace("T", " ").replace("Z", "")
-            timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
-            print(timestamp)
-            PM1 = row[11]
-            list_PM1_raw.append(float(PM1))
-            print(PM1)
-            PM25 = row[12]
-            list_PM25_raw.append(float(PM25))
-            print(PM25)
-            PM10 = row[13]
-            list_PM10_raw.append(float(PM10))
-            print(PM10)
-          
-
+        if i > 0:
+            timestamp_sast_raw = row[1]
+            timestamp_sast_raw = timestamp_sast_raw.replace("T", " ").replace("Z", "")
+            timestamp_sast_raw = datetime.strptime(timestamp_sast_raw, '%Y-%m-%d %H:%M:%S')
+            list_timestamp_sast_raw.append(timestamp_sast_raw)
+            #print(timestamp_sast_raw)
             
-            #list_date.append(date)
-            #list_timestamp.append(timestamp)
-                
+            PM1_raw = row[10]
+            if not_available(PM1_raw): 
+                PM1_raw = np.nan
+            list_PM1_raw.append(float(PM1_raw))
+            #print(PM1_raw)
             
+            PM25_raw = row[11]
+            if not_available(PM25_raw): 
+                PM25_raw = np.nan
+            list_PM25_raw.append(float(PM25_raw))
+            #print(PM25_raw)
+            
+            PM10_raw = row[12]
+            if not_available(PM10_raw): 
+                PM10_raw = np.nan
+            list_PM10_raw.append(float(PM10_raw))
+            #print(PM10_raw)
 
-
+# Reverse the raw data 
+list_PM1_raw.reverse()
+list_PM25_raw.reverse()
+list_PM10_raw.reverse()
+list_timestamp_sast_raw.reverse()
+                                            
 list_PM1_hour = []
 list_PM25_hour = []
 list_PM10_hour = []
-list_timestamp_hour = []
+list_timestamp_sast_hour = []
 
-# Go through CSV file with hourly QuantAQ data
-# with open(path_QuantAQ + 'MOD-PM-00523-hour.csv', newline='') as csv_file:
-#     reader = csv.reader(csv_file, delimiter=',')
-#     for i,row in enumerate(reader):
-#         if i > 0 and i < 10:
-#             timestamp_hour = row[1]
-#             #timestamp.datetime.toISOString().replace('Z', '').replace('T', '');
-#             #date = timestamp.split(' ')[0]
-#             print(timestamp)
-#             PM1_hour = row[11]
-#             list_PM1_hour.append(float(PM1_hour))
-#             print(PM1)
-#             PM25_hour = row[12]
-#             list_PM25_hour.append(float(PM25_hour)
-#             print(PM25_hour)
-#             PM10_hour = row[13]
-#             list_PM10_hour.append(float(PM10_hour))
-#             print(PM10_hour)
+# Go through CSV file with HOURLY QuantAQ data
+with open(path_QuantAQ + 'MOD-PM-00523-hour.csv', newline='') as csv_file:
+    reader = csv.reader(csv_file, delimiter=',')
+    for i,row in enumerate(reader):
+        if i > 0:
+            timestamp_sast_hour = row[0]
+            timestamp_sast_hour = timestamp_sast_hour.replace("T", " ").replace("+02:00", "")
+            timestamp_sast_hour = datetime.strptime(timestamp_sast_hour, '%Y-%m-%d %H:%M:%S')
+            list_timestamp_sast_hour.append(timestamp_sast_hour)
+            #print(timestamp_sast)
+            
+            PM1_hour = row[9]
+            if not_available(PM1_hour): 
+                PM1_hour = np.nan
+            list_PM1_hour.append(float(PM1_hour))
+            # print(PM1_hour)
+            
+            PM25_hour = row[10]
+            if not_available(PM25_hour): 
+                PM25_hour = np.nan
+            list_PM25_hour.append(float(PM25_hour))
+            #print(PM25_hour)
+            
+            PM10_hour = row[11]
+            if not_available(PM10_hour): 
+                PM10_hour = np.nan
+            list_PM10_hour.append(float(PM10_hour))
+            #print(PM10_hour)
 
 
 list_PM1_day = []
 list_PM25_day = []
 list_PM10_day = []
-list_timestamp_day = []
+list_timestamp_sast_day = []
 
-# Go through CSV file with hourly QuantAQ data
-# with open(path_QuantAQ + 'MOD-PM-00523-day.csv', newline='') as csv_file:
-#     reader = csv.reader(csv_file, delimiter=',')
-#     for i,row in enumerate(reader):
+## Go through CSV file with DAILY QuantAQ data
+with open(path_QuantAQ + 'MOD-PM-00523-day.csv', newline='') as csv_file:
+    reader = csv.reader(csv_file, delimiter=',')
+    for i,row in enumerate(reader):
+        if i > 0:
+            timestamp_sast_day = row[0]
+            timestamp_sast_day = timestamp_sast_day.replace("T", " ").replace("+02:00", "")
+            timestamp_sast_day = datetime.strptime(timestamp_sast_day, '%Y-%m-%d %H:%M:%S')
+            list_timestamp_sast_day.append(timestamp_sast_day)
+            #print(timestamp_sast)
+            
+            PM1_day = row[9]
+            if not_available(PM1_day): 
+                PM1_day = np.nan
+            list_PM1_day.append(float(PM1_day))
+            #print(PM1_day)
+            
+            PM25_day = row[10]
+            if not_available(PM25_day): 
+                PM25_day = np.nan
+            list_PM25_day.append(float(PM25_day))
+            #print(PM25_day)
+            
+            PM10_day = row[11]
+            if not_available(PM10_day): 
+                PM10_day = np.nan
+            list_PM10_day.append(float(PM10_day))
+            #print(PM10_day)
 
 
 ## PM1 Plots
-## PM1 Raw Data
-# plt.scatter(list_dt_timestamp, list_PM1_raw, alpha=0.5, marker="x")
+## PM1 RAW Data
+# plt.scatter(list_timestamp_sast_raw, list_PM1_raw, alpha=0.5, marker="x")
 # #plt.ylim(0, 100)
 # plt.xticks(rotation=45, ha='right')
 # plt.xlabel("Date")
 # plt.ylabel("PM$_{1}$ ($\mu$g/m$^3$)")
 # plt.title("PM$_{1}$ Raw Data")
-
 # #plt.locator_params(axis='x', nbins=12)
 # plt.grid()
 
-## PM1 Daily Data
-# plt.scatter(list_date_avg, list_PM1_min)
-# plt.scatter(list_date_avg, list_PM1_avg, color="red")
-# plt.scatter(list_date_avg, list_PM1_max, color="green")
-# #plt.xticks(range(len(list_C0_raw)), list_timestamp)
-# plt.xticks(range(len(list_PM1_avg)), list_date_avg)
-# #plt.xticks(rotation=45)
+
+## PM1 HOURLY Data
+# plt.scatter(list_timestamp_sast_hour, list_PM1_hour)
 # #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
 # plt.xlabel("Date")
 # plt.ylabel("PM$_{1}$ ($\mu$g/m$^3$)")
-# # plt.title("PM$_{1}$ Daily Data")
-# plt.xticks(rotation=45, ha='right')
-# plt.locator_params(axis='x', nbins=12)
+# plt.title("PM$_{1}$ Hourly Data")
+# #plt.locator_params(axis='x', nbins=12)
 # plt.grid()
-# plt.legend(['Miniumum', 'Average', "Maximum"])
+
+## PM1 DAILY Data
+# plt.scatter(list_timestamp_sast_day, list_PM1_day)
+# #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{1}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{1}$ Daily Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+
 
 ## PM25 Plots
 ## PM25 Raw Data
-# plt.scatter(list_dt_timestamp, list_PM25_raw, alpha=0.5, marker="x")
+# plt.scatter(list_timestamp_sast_raw, list_PM1_raw, alpha=0.5, marker="x")
 # #plt.ylim(0, 100)
 # plt.xticks(rotation=45, ha='right')
 # plt.xlabel("Date")
@@ -135,19 +183,59 @@ list_timestamp_day = []
 # #plt.locator_params(axis='x', nbins=12)
 # plt.grid()
 
-## PM25 Daily Data
-# plt.scatter(list_date_avg, list_PM25_min)
-# plt.scatter(list_date_avg, list_PM25_avg, color="red")
-# plt.scatter(list_date_avg, list_PM25_max, color="green")
-# plt.xticks(range(len(list_PM25_avg)), list_date_avg)
+
+# # PM25 HOURLY Data
+# plt.scatter(list_timestamp_sast_hour, list_PM1_hour)
 # #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{2.5}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{2.5}$ Hourly Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
+
+# # PM25 DAILY Data
+# plt.scatter(list_timestamp_sast_day, list_PM1_day)
+# #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
 # plt.xlabel("Date")
 # plt.ylabel("PM$_{2.5}$ ($\mu$g/m$^3$)")
 # plt.title("PM$_{2.5}$ Daily Data")
-# plt.xticks(rotation=45, ha='right')
-# plt.locator_params(axis='x', nbins=12)
+# #plt.locator_params(axis='x', nbins=12)
 # plt.grid()
-# plt.legend(['Miniumum', 'Average', "Maximum"])
+
+## PM10 Plots 
+## PM10 RAW Data
+plt.scatter(list_timestamp_sast_raw, list_PM10_raw, alpha=0.5, marker="x")
+plt.ylim(0, 1000)
+plt.xticks(rotation=45, ha='right')
+plt.xlabel("Date")
+plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
+plt.title("PM$_{10}$ Raw Data")
+#plt.locator_params(axis='x', nbins=12)
+plt.grid()
+
+
+## PM10 HOURLY Data
+plt.scatter(list_timestamp_sast_hour, list_PM10_hour)
+#plt.ylim(0, 100)
+plt.xticks(rotation=45, ha='right')
+plt.xlabel("Date")
+plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
+plt.title("PM$_{10}$ Hourly Data")
+#plt.locator_params(axis='x', nbins=12)
+plt.grid()
+
+## PM10 DAILY Data
+plt.scatter(list_timestamp_sast_day, list_PM10_day)
+#plt.ylim(0, 100)
+plt.xticks(rotation=45, ha='right')
+plt.xlabel("Date")
+plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
+plt.title("PM$_{10}$ Daily Data")
+#plt.locator_params(axis='x', nbins=12)
+plt.grid()
+
 
 ### Code
 # =============================================================================
