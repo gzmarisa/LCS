@@ -206,35 +206,35 @@ with open(path_QuantAQ + 'MOD-PM-00523-day.csv', newline='') as csv_file:
 
 ## PM10 Plots 
 ## PM10 RAW Data
-plt.scatter(list_timestamp_sast_raw, list_PM10_raw, alpha=0.5, marker="x")
-plt.ylim(0, 1000)
-plt.xticks(rotation=45, ha='right')
-plt.xlabel("Date")
-plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
-plt.title("PM$_{10}$ Raw Data")
-#plt.locator_params(axis='x', nbins=12)
-plt.grid()
+# plt.scatter(list_timestamp_sast_raw, list_PM10_raw, alpha=0.5, marker="x")
+# plt.ylim(0, 1000)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{10}$ Raw Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
 
 
-## PM10 HOURLY Data
-plt.scatter(list_timestamp_sast_hour, list_PM10_hour)
-#plt.ylim(0, 100)
-plt.xticks(rotation=45, ha='right')
-plt.xlabel("Date")
-plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
-plt.title("PM$_{10}$ Hourly Data")
-#plt.locator_params(axis='x', nbins=12)
-plt.grid()
+# ## PM10 HOURLY Data
+# plt.scatter(list_timestamp_sast_hour, list_PM10_hour)
+# #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{10}$ Hourly Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
 
-## PM10 DAILY Data
-plt.scatter(list_timestamp_sast_day, list_PM10_day)
-#plt.ylim(0, 100)
-plt.xticks(rotation=45, ha='right')
-plt.xlabel("Date")
-plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
-plt.title("PM$_{10}$ Daily Data")
-#plt.locator_params(axis='x', nbins=12)
-plt.grid()
+# ## PM10 DAILY Data
+# plt.scatter(list_timestamp_sast_day, list_PM10_day)
+# #plt.ylim(0, 100)
+# plt.xticks(rotation=45, ha='right')
+# plt.xlabel("Date")
+# plt.ylabel("PM$_{10}$ ($\mu$g/m$^3$)")
+# plt.title("PM$_{10}$ Daily Data")
+# #plt.locator_params(axis='x', nbins=12)
+# plt.grid()
 
 
 ### Code
