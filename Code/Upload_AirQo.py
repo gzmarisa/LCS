@@ -110,30 +110,31 @@ path_AirQo = '../Data/AirQo/Raw/'
 list_airqo_g5126_PM25_raw = []
 list_airqo_g5126_PM10_raw = []
 list_airqo_g5126_timestamp_raw = []
+list_airqo_g5126_dates = []
 #list_airqo_g5113_timestamp_sast_raw = []
 
 # # Go through CSV file with 
-with open('20240423_airqo_aqg5126_raw_combined.csv', newline='') as csv_file:
-    reader = csv.reader(csv_file, delimiter=',')
-    for i,row in enumerate(reader):
-        if i > 0:
-            #print(row)
-            airqo_g5126_timestamp_raw = row[9]
-            airqo_g5126_timestamp_raw = datetime.strptime(airqo_g5126_timestamp_raw, '%Y-%m-%d %H:%M:%S')
-            list_airqo_g5126_timestamp_raw.append(airqo_g5126_timestamp_raw)
-            #print(airqo_g5113_timestamp_raw)
+# with open('20240423_airqo_aqg5126_raw_combined.csv', newline='') as csv_file:
+#     reader = csv.reader(csv_file, delimiter=',')
+#     for i,row in enumerate(reader):
+#         if i > 0:
+#             #print(row)
+#             airqo_g5126_timestamp_raw = row[9]
+#             airqo_g5126_timestamp_raw = datetime.strptime(airqo_g5126_timestamp_raw, '%Y-%m-%d %H:%M:%S')
+#             list_airqo_g5126_timestamp_raw.append(airqo_g5126_timestamp_raw)
+#             #print(airqo_g5113_timestamp_raw)
             
-            airqo_g5126_PM25_raw = row[7]
-            if not_available(airqo_g5126_PM25_raw):
-                airqo_g5126_PM25_raw = np.nan
-            list_airqo_g5126_PM25_raw.append(float(airqo_g5126_PM25_raw))
-            #print(airqo_g5126_PM25_raw)
+#             airqo_g5126_PM25_raw = row[7]
+#             if not_available(airqo_g5126_PM25_raw):
+#                 airqo_g5126_PM25_raw = np.nan
+#             list_airqo_g5126_PM25_raw.append(float(airqo_g5126_PM25_raw))
+#             #print(airqo_g5126_PM25_raw)
             
-            airqo_g5126_PM10_raw = row[5]
-            if not_available(airqo_g5126_PM10_raw):
-                airqo_g5126_PM10_raw = np.nan
-            list_airqo_g5126_PM10_raw.append(float(airqo_g5126_PM10_raw))
-            #print(airqo_g5126_PM10_raw)        
+#             airqo_g5126_PM10_raw = row[5]
+#             if not_available(airqo_g5126_PM10_raw):
+#                 airqo_g5126_PM10_raw = np.nan
+#             list_airqo_g5126_PM10_raw.append(float(airqo_g5126_PM10_raw))
+#             #print(airqo_g5126_PM10_raw)        
 
 
 # list_airqo_g5113_PM25_raw = []
@@ -142,27 +143,27 @@ with open('20240423_airqo_aqg5126_raw_combined.csv', newline='') as csv_file:
 # #list_airqo_g5113_timestamp_sast_raw = []
             
 # # Go through CSV file with 
-# with open('20240423_airqo_aqg5113_raw_combined.csv', newline='') as csv_file:
-#     reader = csv.reader(csv_file, delimiter=',')
-#     for i,row in enumerate(reader):
-#           if i > 0:
+with open('20240423_airqo_aqg5113_raw_combined.csv', newline='') as csv_file:
+    reader = csv.reader(csv_file, delimiter=',')
+    for i,row in enumerate(reader):
+          if i > 0:
                 
-#             airqo_g5113_timestamp_raw = row[6]
-#             datetime.strptime(airqo_g5113_timestamp_raw, '%Y-%m-%d %H:%M:%S')
-#             list_airqo_g5113_timestamp_raw.append(airqo_g5113_timestamp_raw)
-#             #print(airqo_g5113_timestamp_raw)
+            airqo_g5113_timestamp_raw = row[6]
+            datetime.strptime(airqo_g5113_timestamp_raw, '%Y-%m-%d %H:%M:%S')
+            list_airqo_g5113_timestamp_raw.append(airqo_g5113_timestamp_raw)
+            #print(airqo_g5113_timestamp_raw)
             
-#             airqo_g5113_PM25_raw = row[4]
-#             if not_available(airqo_g5113_PM25_raw):
-#                 airqo_g5113_PM25_raw = np.nan
-#             list_airqo_g5113_PM25_raw.append(float(airqo_g5113_PM25_raw))
-#             #print(airqo_g5113_PM25_raw)
+            airqo_g5113_PM25_raw = row[4]
+            if not_available(airqo_g5113_PM25_raw):
+                airqo_g5113_PM25_raw = np.nan
+            list_airqo_g5113_PM25_raw.append(float(airqo_g5113_PM25_raw))
+            #print(airqo_g5113_PM25_raw)
             
-#             # airqo_g5113_PM10_raw = row[5]
-#             # if not_available(airqo_g5113_PM10_raw):
-#             #     airqo_g5113_PM10_raw = np.nan
-#             # list_airqo_g5113_PM10_raw.append(float(airqo_g5113_PM10_raw))
-#             # #print(airqo_g5113_PM10_raw)                    
+            # airqo_g5113_PM10_raw = row[5]
+            # if not_available(airqo_g5113_PM10_raw):
+            #     airqo_g5113_PM10_raw = np.nan
+            # list_airqo_g5113_PM10_raw.append(float(airqo_g5113_PM10_raw))
+            # #print(airqo_g5113_PM10_raw)                    
 
 ## Plots for AirQo G5126
 ## PM25 Raw Data for AirQo G5126
