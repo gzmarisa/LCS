@@ -22,7 +22,7 @@ def  not_available(parameter):
     return parameter == ''
 
 ## Data path for AirQo
-path_AirQo = '../Data/AirQo/Raw/'
+#path_AirQo = '../Data/AirQo/Raw/'
 
 # Data path for Airqo G5126
 #path_AirQo_g5126 = 'C:/Users/u23993376/Documents/GitHub/LCS/Data/AirQo/Raw/g5126/'
@@ -33,10 +33,10 @@ path_AirQo = '../Data/AirQo/Raw/'
 #         if i > 0 and i < 10:
 #             print(row[1])
 
-## Upload data from Airqo device g5126
-### Go throught all files in the directory 
-## Use a wildcard pattern to match all CSV files in the directory
-# files_AirQo = glob.glob(path_AirQo + '*.txt')
+# Upload data from Airqo device g5126
+## Go throught all files in the directory 
+# Use a wildcard pattern to match all CSV files in the directory
+# files_AirQo = glob.glob(path_AirQo_g5126 + '*.txt')
 # files_AirQo.sort(key=os.path.getmtime)
 
 # combined_data_AirQo = []
@@ -51,7 +51,7 @@ path_AirQo = '../Data/AirQo/Raw/'
   
 #             counter += 1
 
-# with open('20240423_airqo_aqg5126_raw_combined.csv', 'a', newline='') as csv_file:
+# with open('20240501_airqo_aqg5126_raw_combined.csv', 'a', newline='') as csv_file:
 #     writer = csv.writer(csv_file)
 #     writer.writerows(combined_data_AirQo)
 
@@ -77,7 +77,7 @@ path_AirQo = '../Data/AirQo/Raw/'
   
 #             counter += 1
 
-# with open('20240423_airqo_aqg5113_raw_combined.csv', 'a', newline='') as csv_file:
+# with open('20240501_airqo_aqg5113_raw_combined.csv', 'a', newline='') as csv_file:
 #     writer = csv.writer(csv_file)
 #     writer.writerows(combined_data_AirQo_g5113)
 
@@ -107,16 +107,16 @@ path_AirQo = '../Data/AirQo/Raw/'
 #     writer.writerows(combined_data_AirQo_g5113)
 
 
-list_airqo_g5126_PM25_raw = []
-list_airqo_g5126_PM10_raw = []
-list_airqo_g5126_timestamp_raw = []
-list_airqo_g5126_date_raw = []
+# list_airqo_g5126_PM25_raw = []
+# list_airqo_g5126_PM10_raw = []
+# list_airqo_g5126_timestamp_raw = []
+# list_airqo_g5126_date_raw = []
 
-# # Go through CSV file with 
-# with open('20240423_airqo_aqg5126_raw_combined.csv', newline='') as csv_file:
-#     reader = csv.reader(csv_file, delimiter=',')
+# # # # # Go through CSV file with 
+# with open('20240501_airqo_aqg5126_raw_combined.csv', newline='') as csv_file_1:
+#     reader = csv.reader(csv_file_1, delimiter=',')
 #     for i,row in enumerate(reader):
-#         if i > 0:
+#         if i > 0 and i < 500:
 # #             #print(row)
 #             airqo_g5126_date_raw = row[9].split(" ")[0]
 #             list_airqo_g5126_date_raw.append(airqo_g5126_date_raw)
@@ -138,32 +138,26 @@ list_airqo_g5126_date_raw = []
 #             list_airqo_g5126_PM10_raw.append(float(airqo_g5126_PM10_raw))
 #             #print(airqo_g5126_PM10_raw)        
 
-# ## Check dates order by deleting dates 
+# # ## Check dates order by deleting dates 
 # dates_check_g5126 = list(dict.fromkeys(list_airqo_g5126_date_raw))
-
-
 
 list_airqo_g5113_PM25_raw = []
 list_airqo_g5113_PM10_raw = []
 list_airqo_g5113_timestamp_raw = []
 list_airqo_g5113_dates_raw = []
 list_airqo_g5113_timestamp_sast_raw = []
-
-# date = date.split("/") 
-# hour = row[0].split(" ")[0].split(":")[0]
-# pms = row[1]  
-          
+## i - 55267
 # # Go through CSV file with 
-with open('20240423_airqo_aqg5113_raw_combined.csv', newline='') as csv_file:
-    reader = csv.reader(csv_file, delimiter=',')
+with open('20240501_airqo_aqg5113_raw_combined.csv', newline='') as csv_file_2:
+    reader = csv.reader(csv_file_2, delimiter=',')
     for i,row in enumerate(reader):
           if i > 0:
-            timestamp  = row[6]
-            airqo_g5113_date_raw = row[6].split(" ")[0]
-            list_airqo_g5113_dates_raw.append(airqo_g5113_date_raw)
+            # timestamp  = row[6]
+            # airqo_g5113_date_raw = row[6].split(" ")[0]
+            # list_airqo_g5113_dates_raw.append(airqo_g5113_date_raw)
             #print(airqo_g5113_date_raw)
             airqo_g5113_timestamp_raw = row[6]
-            datetime.strptime(airqo_g5113_timestamp_raw, '%Y-%m-%d %H:%M:%S')
+            airqo_g5113_timestamp_raw = datetime.strptime(airqo_g5113_timestamp_raw, '%Y-%m-%d %H:%M:%S')
             list_airqo_g5113_timestamp_raw.append(airqo_g5113_timestamp_raw)
             ##print(airqo_g5113_timestamp_raw)
             
@@ -173,14 +167,14 @@ with open('20240423_airqo_aqg5113_raw_combined.csv', newline='') as csv_file:
             list_airqo_g5113_PM25_raw.append(float(airqo_g5113_PM25_raw))
             ##print(airqo_g5113_PM25_raw)
             
-            airqo_g5113_PM10_raw = row[5]
-            if not_available(airqo_g5113_PM10_raw):
-                airqo_g5113_PM10_raw = np.nan
-            list_airqo_g5113_PM10_raw.append(float(airqo_g5113_PM10_raw))
+            # airqo_g5113_PM10_raw = row[5]
+            # if not_available(airqo_g5113_PM10_raw):
+            #     airqo_g5113_PM10_raw = np.nan
+            # list_airqo_g5113_PM10_raw.append(float(airqo_g5113_PM10_raw))
             ##print(airqo_g5113_PM10_raw)                    
 
-# Check dates order by deleting dates 
-dates_check = list(dict.fromkeys(list_airqo_g5113_dates_raw))
+# ## Check dates order by deleting dates 
+# dates_check_aq5113 = list(dict.fromkeys(list_airqo_g5113_dates_raw))
 
 ## Plots for AirQo G5126
 ## PM25 Raw Data for AirQo G5126
@@ -206,15 +200,15 @@ dates_check = list(dict.fromkeys(list_airqo_g5113_dates_raw))
 # plt.grid()
 
 ## Plots for AirQo G5113
-## PM25 Raw Data for AirQo G5113
-# plt.scatter(list_airqo_g5113_timestamp_raw, list_airqo_g5113_PM25_raw, alpha=0.5, marker="x")
-# #plt.ylim(0, 100)
-# plt.xticks(rotation=45, ha='right')
-# plt.xlabel("Date")
-# plt.ylabel("PM$_{2.5}$ ($\mu$g/m$^3$)")
-# plt.title("PM$_{2.5}$ Raw Data")
-# #plt.locator_params(axis='x', nbins=12)
-# plt.grid()
+# ## PM25 Raw Data for AirQo G5113
+plt.scatter(list_airqo_g5113_timestamp_raw, list_airqo_g5113_PM25_raw, alpha=0.5, marker="x")
+#plt.ylim(0, 100)
+plt.xticks(rotation=45, ha='right')
+plt.xlabel("Date")
+plt.ylabel("PM$_{2.5}$ ($\mu$g/m$^3$)")
+plt.title("PM$_{2.5}$ Raw Data")
+#plt.locator_params(axis='x', nbins=12)
+plt.grid()
 
 
 # plt.scatter(list_airqo_g5113_timestamp_raw, list_airqo_g5113_PM25_raw, alpha=0.5, marker="x")
