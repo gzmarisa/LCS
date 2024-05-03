@@ -13,6 +13,9 @@ import datetime
 def utc_to_sa(utc_dt):
   return utc_dt + datetime.timedelta(hours=2)
 
+def  not_available(parameter):
+    return parameter == ''
+
 def empty(pm):
     return len(pm) == 0
 
@@ -26,17 +29,24 @@ list_PA_PM10_raw = []
 list_PA_timestamp_utc_raw = []
 list_PA_timestamp_utc_raw = []
 
-list_PA_PM1_hour = []
-list_PA_PM25_hour = []
-list_PA_PM10_hour = []
+list_PA_PM1_avg_hour = []
+list_PA_PM25_avg_hour = []
+list_PA_PM10_avg_hour = []
 list_PA_timestamp_utc_hour = []
 list_PA_timestamp_utc_hour = []
 
-list_PA_PM1_daily = []
-list_PA_PM25_daily = []
-list_PA_PM10_daily = []
+list_PA_PM1_avg_day = []
+list_PA_PM25_avg_day = []
+list_PA_PM10_avg_day = []
+list_PA_date_avg_day = []
 list_PA_timestamp_utc_daily = []
 list_PA_timestamp_utc_daily = []
+
+sum_PM25_hour = 0
+valid_PM25_hour = 0
+
+sum_PM25_day = 0
+valid_PM25_day = 0
 
 with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA_csv_file:
     PA_csv_reader = csv.reader(PA_csv_file, delimiter=',')
@@ -46,28 +56,69 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
     PA_SumPms = 0
     PA_valid = 0
     for row in PA_csv_reader:
+        if PA_counter == 0:
+            header = row
+            #print(header)
         if PA_counter == 1:
             previous_row = row
-        if PA_counter > 1 and PA_counter < 10:
+        if PA_counter > 1 and PA_counter < 2000:
             #print(row)
             previous_timestamp_utc_raw = previous_row[0]
             previous_timestamp_utc_raw = previous_timestamp_utc_raw.replace(" UTC", "")
             previous_timestamp_utc_raw = datetime.datetime.strptime(previous_timestamp_utc_raw, '%Y-%m-%d %H:%M:%S')
             previous_timestamp_sast_raw = utc_to_sa(previous_timestamp_utc_raw)
             
+            previous_date = previous_timestamp_sast_raw.date()
+            previous_hour = previous_timestamp_sast_raw.hour
+            previous_day = previous_timestamp_sast_raw.day
+            
             timestamp_utc_raw = row[0]
             timestamp_utc_raw = timestamp_utc_raw.replace(" UTC", "")
             timestamp_utc_raw = datetime.datetime.strptime(timestamp_utc_raw, '%Y-%m-%d %H:%M:%S')
             timestamp_sast_raw = utc_to_sa(timestamp_utc_raw)
             
+            date = timestamp_sast_raw.date()
             hour = timestamp_sast_raw.hour
-            difference_hour = hour - previous_hour
             day = timestamp_sast_raw.day
-            print(hour)
             
-            if different_hour = 0 and d
+            diff_hour = hour - previous_hour
+            diff_day = day - previous_day
             
-            if different_hour != 0
+        
+            #PM1 = row[2]
+            #list_PA_PM1_raw.append(float(PM1))
+            PM25 = row[3]
+            list_PA_PM25_raw.append(float(PM25))
+            #PM10 = row[4]
+            #list_PA_PM10_raw.append(float(PM10))
+
+            ## Hourly
+            #PM1
+
+            ## Daily
+            ## PM 1
+            if not_available(PM25): 
+                PM25 = np.nan
+                   
+            if diff_day != 0:
+                avg_PM25_day = sum_PM1_day/valid_PM25_day
+                list_PA_date_avg_day.append(previous_date)
+                list_PA_PM25_avg_day.append(avg_PM25_day)
+                print(previous_date)
+                print(avg_PM25_day)
+                sumPM25_day = 0 #resart after the 24 hours
+                valid_PM25_day = 0
+            elif diff_day == 0 and PM25 == np.nan:    
+                pass
+            elif diff_day == 0 and PM25 != np.nan:
+                sum_PM25_day += float(PM1)      
+                valid_PM25_day += 1
+                
+            
+            
+            #if different_hour == 0:
+                
+            #if different_hour != 0:
             
             previous_row = row     
              
@@ -159,6 +210,7 @@ elif int(hour) < 24 and pms != None
 ## Remove high values
 ## Remove double values 
 
+
 # =============================================================================
 # ## Upload PA data
 # with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA_csv_file:
@@ -178,4 +230,6 @@ elif int(hour) < 24 and pms != None
 #         PA_counter += 1
 
 # =============================================================================
+
+
 
