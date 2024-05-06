@@ -51,7 +51,7 @@ valid_PM25_day = 0
 with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA_csv_file:
     PA_csv_reader = csv.reader(PA_csv_file, delimiter=',')
     
-    PA_started = False
+    #PA_started = False
     PA_counter = 0
     PA_SumPms = 0
     PA_valid = 0
@@ -60,6 +60,15 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             header = row
             #print(header)
         if PA_counter == 1:
+            PM25 = row[3]
+            if not_available(PM25): 
+                PM25 = np.nan
+            if PM25 == np.nan:    
+                pass
+            elif PM25 != np.nan:
+                sum_PM25_day += float(PM25)      
+                valid_PM25_day += 1
+
             previous_row = row
         if PA_counter > 1 and PA_counter < 2000:
             #print(row)
@@ -93,15 +102,15 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             #list_PA_PM10_raw.append(float(PM10))
 
             ## Hourly
-            #PM1
-
+            #PM25
+            
+            
             ## Daily
-            ## PM 1
+            ## PM25
             if not_available(PM25): 
                 PM25 = np.nan
-                   
             if diff_day != 0:
-                avg_PM25_day = sum_PM1_day/valid_PM25_day
+                avg_PM25_day = sum_PM25_day/valid_PM25_day
                 list_PA_date_avg_day.append(previous_date)
                 list_PA_PM25_avg_day.append(avg_PM25_day)
                 print(previous_date)
@@ -111,18 +120,11 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             elif diff_day == 0 and PM25 == np.nan:    
                 pass
             elif diff_day == 0 and PM25 != np.nan:
-                sum_PM25_day += float(PM1)      
+                sum_PM25_day += float(PM25)      
                 valid_PM25_day += 1
                 
-            
-            
-            #if different_hour == 0:
-                
-            #if different_hour != 0:
-            
             previous_row = row     
              
-        
         PA_counter += 1
 
 
