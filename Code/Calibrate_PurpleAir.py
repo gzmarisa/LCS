@@ -23,24 +23,17 @@ def negative(pm):
     return float(pm) < 0
 
 
-list_PA_PM1_raw = []
 list_PA_PM25_raw = []
-list_PA_PM10_raw = []
 list_PA_timestamp_utc_raw = []
 list_PA_timestamp_utc_raw = []
 
-list_PA_PM1_avg_hour = []
 list_PA_PM25_avg_hour = []
-list_PA_PM10_avg_hour = []
-list_PA_timestamp_utc_hour = []
-list_PA_timestamp_utc_hour = []
+list_PA_date_avg_hour = []
+list_PA_timestamp_sast_hour = []
 
-list_PA_PM1_avg_day = []
 list_PA_PM25_avg_day = []
-list_PA_PM10_avg_day = []
 list_PA_date_avg_day = []
-list_PA_timestamp_utc_daily = []
-list_PA_timestamp_utc_daily = []
+list_PA_timestamp_sast_day = []
 
 sum_PM25_hour = 0
 valid_PM25_hour = 0
@@ -70,7 +63,7 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
                 valid_PM25_day += 1
 
             previous_row = row
-        if PA_counter > 1 and PA_counter < 2000:
+        if PA_counter > 1 and PA_counter < 100:
             #print(row)
             previous_timestamp_utc_raw = previous_row[0]
             previous_timestamp_utc_raw = previous_timestamp_utc_raw.replace(" UTC", "")
@@ -93,28 +86,41 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             diff_hour = hour - previous_hour
             diff_day = day - previous_day
             
-        
-            #PM1 = row[2]
-            #list_PA_PM1_raw.append(float(PM1))
             PM25 = row[3]
             list_PA_PM25_raw.append(float(PM25))
-            #PM10 = row[4]
-            #list_PA_PM10_raw.append(float(PM10))
 
-            ## Hourly
-            #PM25
             
-            
-            ## Daily
-            ## PM25
             if not_available(PM25): 
                 PM25 = np.nan
+            
+            ## Hourly
+            ##timestamp_sast_hour  = timestamp_sast_raw.strftime("%Y-%m-%d %H:00")
+            #timestamp_sast_hour = datetime.datetime.strptime(timestamp_sast_raw, "%Y-%m-%d %H:00")
+            #print()
+            if diff_hour != 0:
+                avg_PM25_hour = sum_PM25_hour/valid_PM25_hour
+                list_PA_date_avg_hour.append(previous_date)
+                list_PA_PM25_avg_hour.append(avg_PM25_hour)
+                #print(previous_date)
+                #print(avg_PM25_day)
+                
+                print(timestamp_sast_hour)
+                print(avg_PM25_hour)
+                sumPM25_hour = 0 #resart after the 24 hours
+                valid_PM25_hour = 0
+            elif diff_hour == 0 and PM25 == np.nan:    
+                pass
+            elif diff_hour == 0 and PM25 != np.nan:
+                sum_PM25_hour += float(PM25)      
+                valid_PM25_hour += 1
+        
+            ## Daily
             if diff_day != 0:
                 avg_PM25_day = sum_PM25_day/valid_PM25_day
                 list_PA_date_avg_day.append(previous_date)
                 list_PA_PM25_avg_day.append(avg_PM25_day)
-                print(previous_date)
-                print(avg_PM25_day)
+                #print(previous_date)
+                #print(avg_PM25_day)
                 sumPM25_day = 0 #resart after the 24 hours
                 valid_PM25_day = 0
             elif diff_day == 0 and PM25 == np.nan:    
