@@ -35,9 +35,13 @@ list_PA_TEMP_C_raw = []
 list_PA_timestamp_utc_raw = []
 list_PA_timestamp_sast_raw = []
 
+list_PA_PM25_timestamp_sast_hour = []
+list_PA_RH_timestamp_sast_hour = []
+list_PA_TEMP_C_timestamp_sast_hour = []
+
 
 list_PA_PM25_avg_hour = []
-list_PA_RH_avg_hour []
+list_PA_RH_avg_hour = []
 list_PA_TEMP_C_avg_hour = []
 
 list_PA_date_avg_hour = []
@@ -48,9 +52,17 @@ list_PA_date_avg_day = []
 list_PA_timestamp_sast_day = []
 
 sum_PM25_hour = 0
+sum_RH_hour = 0
+sum_TEMP_C_hour = 0
+
 valid_PM25_hour = 0
+valid_RH_hour = 0
+valid_TEMP_C_hour = 0
 
 sum_PM25_day = 0
+sum_RH_day = 0
+
+valid_PM25_day = 0
 valid_PM25_day = 0
 
 with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA_csv_file:
@@ -58,7 +70,7 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
     
     #PA_started = False
     PA_counter = 0
-    started_PM = False
+    #started_PM = False
     for row in PA_csv_reader:
         if PA_counter == 0:
             header = row
@@ -158,8 +170,7 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             ## RH
             if diff_hour != 0 and valid_RH_hour != 0:
                 avg_RH_hour = sum_RH_hour/valid_RH_hour
-                
-                list_PA_timestamp_sast_hour.append(previous_timestamp_sast_hour)
+                list_PA_RH_timestamp_sast_hour.append(previous_timestamp_sast_hour)
                 list_PA_RH_avg_hour.append(avg_RH_hour)
                 
                 sumRH_hour = 0 #restart
@@ -167,7 +178,7 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             elif diff_hour != 0 and valid_RH_hour == 0:
                 avg_RH_hour = np.nan
                 
-                list_PA_timestamp_sast_hour.append(previous_timestamp_sast_hour)
+                list_PA_RH_timestamp_sast_hour.append(previous_timestamp_sast_hour)
                 list_PA_RH_avg_hour.append(avg_RH_hour)
                 sumRH_hour = 0 #resart 
                 valid_RG_hour = 0
@@ -180,8 +191,7 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             ## TEMP_C
             if diff_hour != 0 and valid_TEMP_C_hour != 0:
                 avg_TEMP_C_hour = sum_TEMP_C_hour/valid_TEMP_C_hour
-                
-                #list_PA_timestamp_sast_hour.append(previous_timestamp_sast_hour)
+                list_PA_TEMP_C_timestamp_sast_hour.append(previous_timestamp_sast_hour)
                 list_PA_TEMP_C_avg_hour.append(avg_TEMP_C_hour)
                 
                 sumTEMP_C_hour = 0 #restart
@@ -189,7 +199,7 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
             elif diff_hour != 0 and valid_TEMP_C_hour == 0:
                 avg_TEMP_C_hour = np.nan
                 
-                #list_PA_timestamp_sast_hour.append(previous_timestamp_sast_hour)
+                list_PA_TEMP_C_timestamp_sast_hour.append(previous_timestamp_sast_hour)
                 list_PA_TEMP_C_avg_hour.append(avg_TEMP_C_hour)
                 sumTEMP_C_hour = 0 #resart after the 24 hours
                 valid_TEMP_C_hour = 0
@@ -200,17 +210,22 @@ with open('../Data/PurpleAir/CSIR_wel_eb7e/CSIR_wel_eb7e.csv', newline='') as PA
                 valid_TEMP_C_hour += 1
             
             
-            
-            
             ## Daily
-            if diff_day != 0:
+            ## PM25
+            if diff_day != 0 and valid_PM25_day != 0:
                 avg_PM25_day = sum_PM25_day/valid_PM25_day
                 list_PA_date_avg_day.append(previous_date)
                 list_PA_PM25_avg_day.append(avg_PM25_day)
-                #print(previous_date)
-                #print(avg_PM25_day)
+
                 sumPM25_day = 0 #resart after the 24 hours
                 valid_PM25_day = 0
+            elif diff_day != 0 and valid_PM25_day == 0:
+                avg_PM25_day = np.nan
+                list_PA_date_avg_day.append(previous_date)
+                list_PA_PM25_avg_hour.append(avg_PM25_hour)
+                
+                sumPM25_day = 0 #resart after the 24 hours
+                valid_PM25_day  = 0
             elif diff_day == 0 and PM25 == np.nan:    
                 pass
             elif diff_day == 0 and PM25 != np.nan:
